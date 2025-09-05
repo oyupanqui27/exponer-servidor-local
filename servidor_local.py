@@ -1,19 +1,4 @@
 from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-@app.route('/webhook', methods=['POST'])
-def recibir_datos():
-    datos = request.json
-    print("Datos recibidos:", datos)
-    # Aquí puedes guardar los datos o procesarlos
-    Registro_Lote_Campus_Virtual(Playwright,"datos.csv","Creación masiva de alumnos")
-    return jsonify({"status": "ok papu"}), 200
-
-if __name__ == '__main__':
-
-    app.run(host='0.0.0.0', port=5000)
-
 import re
 import os
 from pathlib import Path
@@ -21,7 +6,6 @@ from playwright.sync_api import Playwright, sync_playwright, expect
 from time import sleep
 from os import remove
 from datetime import datetime
-
 
 def Registro_Lote_Campus_Virtual(playwright: Playwright,archivo,nombre_aplicativo) -> None:
     browser = playwright.chromium.launch(headless=True)
@@ -58,3 +42,23 @@ def Registro_Lote_Campus_Virtual(playwright: Playwright,archivo,nombre_aplicativ
     # ---------------------
     context.close()
     browser.close()
+
+
+app = Flask(__name__)
+
+@app.route('/webhook', methods=['POST'])
+def recibir_datos():
+    datos = request.json
+    print("Datos recibidos:", datos)
+    # Aquí puedes guardar los datos o procesarlos
+
+    try:
+        with sync_playwright() as playwright:
+            Registro_Lote_Campus_Virtual(playwright,"datos.csv","Creación masiva de alumnos")
+        remove(str(dir_con_archivo))
+    except Exception as e:
+    return jsonify({"status": "ok papu"}), 200
+
+if __name__ == '__main__':
+
+    app.run(host='0.0.0.0', port=5000)
