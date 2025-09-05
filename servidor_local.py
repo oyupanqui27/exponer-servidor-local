@@ -8,10 +8,11 @@ def recibir_datos():
     print("Datos recibidos:", datos)
     # Aquí puedes guardar los datos o procesarlos
 
-    return jsonify({"status": "ok papi","Datos recibidos:" datos}), 200
+    return jsonify({"status": datos), 200
 
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=5000)
+
 
 
