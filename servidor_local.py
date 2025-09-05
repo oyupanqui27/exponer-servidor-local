@@ -52,13 +52,14 @@ def recibir_datos():
     print("Datos recibidos:", datos)
     # Aquí puedes guardar los datos o procesarlos
 
-    try:
-        with sync_playwright() as playwright:
-            Registro_Lote_Campus_Virtual(playwright,"datos.csv","Creación masiva de alumnos")
-        remove(str(dir_con_archivo))
-    except Exception as e:
+
+    with sync_playwright() as playwright:
+        Registro_Lote_Campus_Virtual(playwright,"datos.csv","Creación masiva de alumnos")
+    remove(str(dir_con_archivo))
+
     return jsonify({"status": "ok papu"}), 200
 
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=5000)
+
